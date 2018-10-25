@@ -56,7 +56,50 @@ public class TestStreaming {
 		List<Float> productPriceList = productsList.stream().filter(p -> p.getPrice() > 30000)// filtering data
 				.map(Product::getPrice) // fetching price by referring getPrice method
 				.collect(Collectors.toList()); // collecting as list
-		System.out.println("productPriceList is " +productPriceList);
+		System.out.println("productPriceList is " + productPriceList);
+
+		// parallel
+		System.out.println("Now parallelizing...");
+
+		// filtering by price, creating a map with filtered prices.
+		List<Float> listPricesP = productsList.parallelStream().filter(aProduct -> aProduct.getPrice() <= 28000f)
+				.map(aProduct -> aProduct.getPrice()).collect(Collectors.toList());
+
+		// iterating over list
+		listPricesP.forEach(System.out::println);
+
+		// This is more compact approach for filtering data
+		productsList.parallelStream().filter(product -> product.getPrice() == 30000)
+				.forEach(product -> System.out.println(product.getPrice()));
+
+		// Using Collectors's method to sum the prices.
+		double totalPrice3P = productsList.parallelStream().collect(Collectors.summingDouble(product -> product.getPrice()));
+		System.out.println("total sum is " + totalPrice3P);
+
+		// max() method to get max Product price
+		Product productA_P = productsList.parallelStream()
+				.max((product1, product2) -> product1.getPrice() > product2.getPrice() ? 1 : -1).get();
+
+		System.out.println("max product price is " + productA_P.getPrice());
+		// min() method to get min Product price
+		Product productB_P = productsList.parallelStream()
+				.max((product1, product2) -> product1.getPrice() < product2.getPrice() ? 1 : -1).get();
+		System.out.println("min product price is " + productB_P.getPrice());
+
+		// Converting product List into Set
+		Set<Float> productPriceSet_P = productsList.parallelStream().filter(product -> product.getPrice() < 30000)
+				.map(product -> product.getPrice()).collect(Collectors.toSet());
+		System.out.println("productPriceSet is " + productPriceSet_P);
+
+		// Converting Product List into a Map
+		Map<Integer, String> productPriceMap_P = productsList.parallelStream()
+				.collect(Collectors.toMap(p -> p.getId(), p -> p.getName()));
+		System.out.println("productPriceMap is " + productPriceMap_P);
+
+		List<Float> productPriceList_P = productsList.parallelStream().filter(p -> p.getPrice() > 30000)// filtering data
+				.map(Product::getPrice) // fetching price by referring getPrice method
+				.collect(Collectors.toList()); // collecting as list
+		System.out.println("productPriceList is " + productPriceList_P);
 
 	}
 
