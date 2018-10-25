@@ -1,7 +1,7 @@
 # java8-streaming
 playing with functional java8 style streaming api.
 
-actual output
+actual output\r
 
 25000.0
 28000.0
