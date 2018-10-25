@@ -89,5 +89,6 @@ Stream of Primitives... <br />
 0.47084556420331924 <br />
 0.24412032084607604 <br />
  <br />
+sorting a hashMap by value <br />
 {b=10, c=12, d=20, a=21}  <br />
  <br />
