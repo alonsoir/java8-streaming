@@ -8,7 +8,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -194,7 +196,19 @@ public class TestStreaming {
 		DoubleStream doubleStream = random.doubles(3);
 		doubleStream.forEach(System.out::println);
 		
-		
+		// sorting a hashMap by value
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		Map<String, Integer> sortedMap = new LinkedHashMap<String, Integer>();
+		map.put("a", 21);
+		map.put("b", 10);
+		map.put("c", 12);
+		map.put("d", 20);
+		map.entrySet().stream()
+					  .sorted((o1, o2) -> o1.getValue().compareTo(o2.getValue()))
+					  .map(e -> e.getKey())
+					  .collect(Collectors.toList())
+					  .forEach(k -> sortedMap.put(k, map.get(k)));
+		System.out.println(sortedMap);
 	}
 
 }
