@@ -1,15 +1,40 @@
 package com.aironman;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
+import java.util.stream.Stream;
 
 public class TestStreaming {
 
 	private static List<Product> productsList = new ArrayList<Product>();
 
+	/**
+	 * @param args
+	 */
+	/**
+	 * @param args
+	 */
+	/**
+	 * @param args
+	 */
+	/**
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		// Adding Products
 		productsList.add(new Product(1, "HP Laptop", 25000f));
@@ -73,7 +98,8 @@ public class TestStreaming {
 				.forEach(product -> System.out.println(product.getPrice()));
 
 		// Using Collectors's method to sum the prices.
-		double totalPrice3P = productsList.parallelStream().collect(Collectors.summingDouble(product -> product.getPrice()));
+		double totalPrice3P = productsList.parallelStream()
+				.collect(Collectors.summingDouble(product -> product.getPrice()));
 		System.out.println("total sum is " + totalPrice3P);
 
 		// max() method to get max Product price
@@ -96,11 +122,79 @@ public class TestStreaming {
 				.collect(Collectors.toMap(p -> p.getId(), p -> p.getName()));
 		System.out.println("productPriceMap is " + productPriceMap_P);
 
-		List<Float> productPriceList_P = productsList.parallelStream().filter(p -> p.getPrice() > 30000)// filtering data
+		List<Float> productPriceList_P = productsList.parallelStream().filter(p -> p.getPrice() > 30000)// filtering
+																										// data
 				.map(Product::getPrice) // fetching price by referring getPrice method
 				.collect(Collectors.toList()); // collecting as list
 		System.out.println("productPriceList is " + productPriceList_P);
 
+		// Creating stream from collection, set or array
+
+		System.out.println("Creating stream from collection, set or array...");
+		Collection<String> collection = Arrays.asList("JAVA", "J2EE", "Spring", "Hibernate");
+		Stream<String> stream2 = collection.stream();
+		stream2.forEach(System.out::println);
+		List<String> list = Arrays.asList("JAVA", "J2EE", "Spring", "Hibernate");
+		Stream<String> stream3 = list.stream();
+		stream3.forEach(System.out::println);
+		Set<String> set = new HashSet<>(list);
+		Stream<String> stream4 = set.stream();
+		stream4.forEach(System.out::println);
+
+		// Array can also be a source of a Stream
+		System.out.println("Array can also be a source of a Stream...");
+		Stream<String> streamOfArray = Stream.of("a", "b", "c");
+		streamOfArray.forEach(System.out::println);
+		// creating from existing array or of a part of an array:
+		String[] arr = new String[] { "a", "b", "c" };
+		Stream<String> streamOfArrayFull = Arrays.stream(arr);
+		streamOfArrayFull.forEach(System.out::println);
+		Stream<String> streamOfArrayPart = Arrays.stream(arr, 1, 3);
+		streamOfArrayPart.forEach(System.out::println);
+
+		// from streamBuilder
+		System.out.println("from streamBuilder...");
+		Stream<String> streamBuilder = Stream.<String>builder().add("a").add("b").add("c").build();
+		streamBuilder.forEach(System.out::println);
+
+		// From Stream.generate()...
+		System.out.println("From Stream.generate()...");
+		Stream<String> streamGenerated = Stream.generate(() -> "element").limit(10);
+		streamGenerated.forEach(System.out::println);
+
+		// From Stream.iterate()
+		System.out.println("From Stream.iterate()...");
+		Stream<Integer> streamIterated = Stream.iterate(1, n -> n + 2).limit(5);
+		streamIterated.forEach(System.out::println);
+
+		// Stream of File
+		System.out.println("Stream of File...");
+		// absolut path...
+		Path path = Paths.get("//Users/aironman//pmd-eclipse.log");
+		Stream<String> streamOfStrings;
+		try {
+			streamOfStrings = Files.lines(path);
+			Stream<String> streamWithCharset = Files.lines(path, Charset.forName("UTF-8"));
+			streamOfStrings.forEach(System.out::println);
+			streamWithCharset.forEach(System.out::println);
+			streamOfStrings.close();
+			streamWithCharset.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// Stream of Primitives
+		System.out.println("Stream of Primitives...");
+		IntStream intStream = IntStream.range(1, 3);
+		intStream.forEach(System.out::println);
+		LongStream longStream = LongStream.rangeClosed(1, 3);
+		longStream.forEach(System.out::println);
+		Random random = new Random();
+		DoubleStream doubleStream = random.doubles(3);
+		doubleStream.forEach(System.out::println);
+		
+		
 	}
 
 }
