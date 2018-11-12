@@ -1,6 +1,12 @@
 package com.aironman;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -8,6 +14,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -15,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
@@ -23,6 +32,7 @@ import java.util.stream.Stream;
 
 public class TestStreaming {
 
+	private static final String COMMA = ",";
 	private static List<Product> productsList = new ArrayList<Product>();
 
 	/**
@@ -209,6 +219,61 @@ public class TestStreaming {
 					  .collect(Collectors.toList())
 					  .forEach(k -> sortedMap.put(k, map.get(k)));
 		System.out.println(sortedMap);
+		
+		// reading historico_euromillones.csv
+		System.out.print("reading historico_euromillones.csv...");
+		String inputFilePath ="/Users/aironman/Documents/historico_euromillones.csv";
+		
+		try {
+			List<EMPojo> myListEMPojo = processInputFile(inputFilePath) ;
+			myListEMPojo.forEach(System.out::println);
+		    final Comparator<EMPojo> compTotal2017 = (p1, p2) -> Integer.compare( p1.getTotal_2017(), p2.getTotal_2017());
+		    final Comparator<EMPojo> compTotal2018 = (p1, p2) -> Integer.compare( p1.getTotal_2018(), p2.getTotal_2018());
+		    long maxSize = 7l;
+		    System.out.println();
+			System.out.print("reading historico_euromillones.csv sorted by total_2017, 7 values...");
+			System.out.println();
+			myListEMPojo.stream()
+						.sorted(compTotal2017.reversed()) // sort from max to min 
+						.limit(maxSize)
+						.forEach(System.out::println);
+			
+			System.out.println();
+			System.out.print("reading historico_euromillones.csv sorted by total_2018, 7 values...");
+			System.out.println();
+			myListEMPojo.stream()
+						.sorted(compTotal2018.reversed()) // sort from max to min 
+						.limit(maxSize)
+						.forEach(System.out::println);
+			
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
+	
+	private static List<EMPojo> processInputFile(String inputFilePath) throws FileNotFoundException {
+	    List<EMPojo> inputList = new ArrayList<EMPojo>();
+	    try{
+	      File inputF = new File(inputFilePath);
+	      InputStream inputFS = new FileInputStream(inputF);
+	      BufferedReader br = new BufferedReader(new InputStreamReader(inputFS));
+	      // skip the header of the csv
+	      inputList = br.lines().skip(1).map(mapToItem).collect(Collectors.toList());
+	      br.close();
+	    } catch (IOException e) {
+	      System.out.println("FileNotFoundException or IOException ");
+	      e.printStackTrace();
+	    }
+	    return inputList ;
+	}
+	
+	private static Function<String, EMPojo> mapToItem = (line) -> {
+		  String[] p = line.split(COMMA);// a CSV has comma separated lines
+		  EMPojo item = new EMPojo(Integer.parseInt(p[0]),Integer.parseInt(p[1]),Integer.parseInt(p[2]),Integer.parseInt(p[3]));
+		  return item;
+	
+	};
+	
 
 }
