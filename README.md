@@ -92,3 +92,24 @@ Stream of Primitives... <br />
 sorting a hashMap by value <br />
 {b=10, c=12, d=20, a=21}  <br />
  <br />
+
+reading historico_euromillones.csv sorted by total_2017, 7 values... <br />
+EMPojo [number=17, total=131, total_2017=16, total_2018=15] <br />
+EMPojo [number=30, total=127, total_2017=16, total_2018=7] <br />
+EMPojo [number=20, total=119, total_2017=14, total_2018=12] <br />
+EMPojo [number=4, total=132, total_2017=13, total_2018=10] <br />
+EMPojo [number=10, total=125, total_2017=13, total_2018=6] <br />
+EMPojo [number=19, total=126, total_2017=13, total_2018=3] <br />
+EMPojo [number=27, total=121, total_2017=13, total_2018=8] <br />
+<br />
+reading historico_euromillones.csv sorted by total_2018, 7 values... <br />
+EMPojo [number=15, total=126, total_2017=9, total_2018=17] <br />
+EMPojo [number=17, total=131, total_2017=16, total_2018=15] <br />
+EMPojo [number=23, total=135, total_2017=10, total_2018=15] <br />
+EMPojo [number=44, total=138, total_2017=13, total_2018=14] <br />
+EMPojo [number=48, total=109, total_2017=11, total_2018=14] <br />
+EMPojo [number=31, total=115, total_2017=13, total_2018=13] <br />
+EMPojo [number=50, total=140, total_2017=11, total_2018=13] <br />
+<br />
+
+

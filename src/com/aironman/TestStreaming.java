@@ -222,6 +222,7 @@ public class TestStreaming {
 		
 		// reading historico_euromillones.csv
 		System.out.print("reading historico_euromillones.csv...");
+		// FILE not provided, go to https://www.loteriasyapuestas.es/es/euromillones/estadisticas
 		String inputFilePath ="/Users/aironman/Documents/historico_euromillones.csv";
 		
 		try {
